@@ -13,6 +13,16 @@
 
 @implementation BFirebaseAuthenticationHandler
 
+//- (instancetype)init
+//{
+//    self = [super init];
+//    if (self) {
+//        [[FIRAuth auth] signOut:nil];
+//        
+//    }
+//    return self;
+//}
+
 // Note: this method gets called often
 // Each time the main tab bar appears the app check that
 // the user is authenticated
