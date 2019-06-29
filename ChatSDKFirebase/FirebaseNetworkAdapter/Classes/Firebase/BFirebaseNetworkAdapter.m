@@ -15,21 +15,21 @@
 -(id) init {
     if((self = [super init])) {
         
-        if (BChatSDK.config.firebaseShouldConfigureAutomatically) {
-            NSString * plist = BChatSDK.config.firebaseGoogleServicesPlistName;
-            if (plist) {
-                plist = [plist stringByReplacingOccurrencesOfString:@".plist" withString:@""];
-                NSString * path = [[NSBundle mainBundle] pathForResource:plist ofType:@"plist"];
-                FIROptions * options = [[FIROptions alloc] initWithContentsOfFile:path];
-                [FIRApp configureWithOptions:options];
-                [FIRDatabase database].persistenceEnabled = YES;
-            }
-            else {
-                [FIRApp configure];
-            }
-            
-        
-        }
+//        if (BChatSDK.config.firebaseShouldConfigureAutomatically) {
+//            NSString * plist = BChatSDK.config.firebaseGoogleServicesPlistName;
+//            if (plist) {
+//                plist = [plist stringByReplacingOccurrencesOfString:@".plist" withString:@""];
+//                NSString * path = [[NSBundle mainBundle] pathForResource:plist ofType:@"plist"];
+//                FIROptions * options = [[FIROptions alloc] initWithContentsOfFile:path];
+//                [FIRApp configureWithOptions:options];
+//                [FIRDatabase database].persistenceEnabled = YES;
+//            }
+//            else {
+//                [FIRApp configure];
+//            }
+//            
+//        
+//        }
         
         self.core = [[BFirebaseCoreHandler alloc] init];
         self.auth = [[BFirebaseAuthenticationHandler alloc] init];

@@ -8,9 +8,10 @@ target 'ChatSDK Demo' do
   
   pod "ChatSDK", :path => "../"
   pod "ChatSDKFirebase/Adapter", :path => "../"
-  pod "ChatSDKFirebase/FileStorage", :path => "../"
-  pod "ChatSDKFirebase/Push", :path => "../"
-  pod "ChatSDKFirebase/SocialLogin", :path => "../"
+#  pod "ChatSDKFirebase/FileStorage", :path => "../"
+#  pod "ChatSDKFirebase/Push", :path => "../"
+#  pod "ChatSDKFirebase/SocialLogin", :path => "../"
+
 #   pod "ChatSDK/Extras", :path => "../"
   
 #   pod 'TwitterKit', '<3.3.0'

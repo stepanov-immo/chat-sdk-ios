@@ -10,6 +10,97 @@
 
 #import <ChatSDKFirebase/FirebaseAdapter.h>
 
+
+@implementation FIRUser
+-(void)getIDTokenWithCompletion:(FIRAuthTokenCallback)completion {
+    completion(@"123", nil);
+}
+-(NSString *)uid { return @"abc"; }
+@end
+@implementation FIRAuthDataResult
+-(FIRUser *)user { return [FIRUser new]; }
+@end
+@implementation FIRAuthCredential
+@end
+@implementation FIRAuth
++(FIRAuth *)auth { return [FIRAuth new]; }
+-(FIRUser *)currentUser { return [FIRUser new]; }
+-(void)signInWithEmail:(NSString *)email password:(NSString *)password completion:(FIRAuthDataResultCallback)completion {
+    completion([FIRAuthDataResult new], nil);
+}
+@end
+
+@implementation FIRServerValue
++(NSDictionary *)timestamp { return @{}; }
+@end
+@implementation FIRDataSnapshot
+-(NSString *)key { return @"key1"; }
+-(id)value { return @{@"type_v4": @(51)}; }
+@end
+@implementation FIRDatabaseQuery
+-(FIRDatabaseQuery *)queryOrderedByChild:(NSString *)key {
+    NSLog(@"query ordered by child, key %@", key);
+    return self;
+}
+-(FIRDatabaseQuery *)queryStartingAtValue:(id)startValue {
+    NSLog(@"query starting at value %@", startValue);
+    return self;
+}
+-(FIRDatabaseQuery *)queryEndingAtValue:(id)endValue childKey:(NSString *)childKey {
+    NSLog(@"query ending at value %@", endValue);
+    return self;
+}
+-(FIRDatabaseQuery *)queryLimitedToLast:(NSUInteger)limit {
+    NSLog(@"query limited to last %@", @(limit));
+    return self;
+}
+@end
+@implementation FIRDatabaseReference
+{
+    NSString* _path;
+}
++(void)goOnline { NSLog(@"goOnline"); }
++(void)goOffline { NSLog(@"goOffline"); }
+-(FIRDatabaseReference *)child:(NSString *)pathString {
+    NSLog(@"[%@] child %@", self->_path, pathString);
+    FIRDatabaseReference* ref = [FIRDatabaseReference new];
+    ref->_path = [NSString stringWithFormat:@"%@/%@", (_path ?: @""), pathString];
+    return ref;
+}
+-(NSString *)description { return @"fb_ref_path"; }
+-(void)setValue:(id)value { NSLog(@"[%@] set value %@", self->_path, value); }
+-(void)onDisconnectSetValue:(id)value {}
+-(void)onDisconnectRemoveValue {}
+-(FIRDatabaseHandle)observeEventType:(FIRDataEventType)eventType withBlock:(void (^)(FIRDataSnapshot *))block {
+    NSLog(@"[%@] observe type %@", self->_path, @(eventType));
+    if ([_path hasSuffix:@"/threads"] && eventType == FIRDataEventTypeChildAdded) {
+        FIRDataSnapshot* s = [FIRDataSnapshot new];
+        block(s);
+    }
+    if ([_path hasSuffix:@"/threads/key1/details"] && eventType == FIRDataEventTypeValue) {
+        FIRDataSnapshot* s = [FIRDataSnapshot new];
+        block(s);
+    }
+    return 0;
+}
+-(void)observeSingleEventOfType:(FIRDataEventType)eventType withBlock:(void (^)(FIRDataSnapshot *))block {
+    NSLog(@"[%@] observe single type %@", self->_path, @(eventType));
+}
+-(void)updateChildValues:(NSDictionary *)values withCompletionBlock:(void (^)(NSError * _Nullable, FIRDatabaseReference *))block {
+    NSLog(@"[%@] update child %@", self->_path, values);
+}
+-(void)removeValueWithCompletionBlock:(void (^)(NSError * _Nullable, FIRDatabaseReference *))block {}
+@end
+@implementation FIRDatabase
++(FIRDatabase *)database {
+    return [FIRDatabase new];
+}
+-(FIRDatabaseReference *)reference {
+    return [FIRDatabaseReference new];
+}
+@end
+
+
 @implementation FIRDatabaseReference (Paths)
 
 +(FIRDatabaseReference *) firebaseRef {

@@ -182,13 +182,15 @@
     NSString * token = BChatSDK.auth.loginInfo[bTokenKey];
     FIRDatabaseReference * ref = [FIRDatabaseReference userRef:self.entityID];
 
-    return [BCoreUtilities getWithPath:[ref.description stringByAppendingString:@".json"] parameters:@{@"auth": token}].thenOnMain(^id(NSDictionary * response) {
-
-        return [self deserialize:response].thenOnMain(^id(id success) {
-            return self;
-        }, Nil);
-
-    }, Nil);
+    return [RXPromise resolveWithResult:self];
+    
+//    return [BCoreUtilities getWithPath:[ref.description stringByAppendingString:@".json"] parameters:@{@"auth": token}].thenOnMain(^id(NSDictionary * response) {
+//
+//        return [self deserialize:response].thenOnMain(^id(id success) {
+//            return self;
+//        }, Nil);
+//
+//    }, Nil);
 }
 
 -(RXPromise *) on {
@@ -319,24 +321,25 @@
 }
 
 -(RXPromise *) updateFirebaseUser {
-    
-    FIRUser *user = [FIRAuth auth].currentUser;
-    FIRUserProfileChangeRequest *changeRequest = [user profileChangeRequest];
-    
-    changeRequest.displayName = self.model.name;
-    changeRequest.photoURL = [NSURL URLWithString:[self.model.meta metaStringForKey:bUserImageURLKey]];
-    
-    RXPromise * promise = [RXPromise new];
-    
-    [changeRequest commitChangesWithCompletion:^(NSError *_Nullable error) {
-        if (!error) {
-            [promise resolveWithResult:Nil];
-        } else {
-            [promise rejectWithReason:error];
-        }
-    }];
-    
-    return promise;
+
+    return nil;
+//    FIRUser *user = [FIRAuth auth].currentUser;
+//    FIRUserProfileChangeRequest *changeRequest = [user profileChangeRequest];
+//
+//    changeRequest.displayName = self.model.name;
+//    changeRequest.photoURL = [NSURL URLWithString:[self.model.meta metaStringForKey:bUserImageURLKey]];
+//
+//    RXPromise * promise = [RXPromise new];
+//
+//    [changeRequest commitChangesWithCompletion:^(NSError *_Nullable error) {
+//        if (!error) {
+//            [promise resolveWithResult:Nil];
+//        } else {
+//            [promise rejectWithReason:error];
+//        }
+//    }];
+//
+//    return promise;
 }
 
 -(RXPromise *) deserialize: (NSDictionary *) value {

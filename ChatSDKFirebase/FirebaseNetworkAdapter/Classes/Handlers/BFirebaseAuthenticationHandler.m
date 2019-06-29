@@ -102,52 +102,52 @@
     // Depending on the login method we need to authenticate with Firebase
     switch (details.type)
     {
-        case bAccountTypeFacebook: {
-            if (BChatSDK.socialLogin) {
-                [BChatSDK.socialLogin loginWithFacebook].thenOnMain(^id(NSString * token) {
-                    FIRAuthCredential * credential = [FIRFacebookAuthProvider credentialWithAccessToken:token];
-                    //[promise resolveWithResult:credential];
-                    [[FIRAuth auth] signInAndRetrieveDataWithCredential:credential completion:handleResult];
-
-                    return Nil;
-                }, ^id (NSError * error) {
-                    handleResult(Nil, error);
-                    return Nil;
-                });
-            }
-        }
-            break;
-        case bAccountTypeTwitter:
-        {
-            if (BChatSDK.socialLogin) {
-                [BChatSDK.socialLogin loginWithTwitter].thenOnMain(^id(NSArray * array) {
-                    FIRAuthCredential * credential = [FIRTwitterAuthProvider credentialWithToken:array.firstObject
-                                                                                          secret:array.lastObject];
-                    [[FIRAuth auth] signInAndRetrieveDataWithCredential:credential completion:handleResult];
-                    return Nil;
-                    
-                }, ^id (NSError * error) {
-                    handleResult(Nil, error);
-                    return Nil;
-                });
-            }
-        }
-            break;
-        case bAccountTypeGoogle:
-        {
-            if (BChatSDK.socialLogin) {
-                [BChatSDK.socialLogin loginWithGoogle].thenOnMain(^id(NSArray * array) {
-                    FIRAuthCredential * credential = [FIRGoogleAuthProvider credentialWithIDToken:array.firstObject
-                                                                                      accessToken:array.lastObject];
-                    [[FIRAuth auth] signInAndRetrieveDataWithCredential:credential completion:handleResult];
-                    return Nil;
-                    
-                }, ^id (NSError * error) {
-                    handleResult(Nil, error);
-                    return Nil;
-                });
-            }
-        }
+//        case bAccountTypeFacebook: {
+//            if (BChatSDK.socialLogin) {
+//                [BChatSDK.socialLogin loginWithFacebook].thenOnMain(^id(NSString * token) {
+//                    FIRAuthCredential * credential = [FIRFacebookAuthProvider credentialWithAccessToken:token];
+//                    //[promise resolveWithResult:credential];
+//                    [[FIRAuth auth] signInAndRetrieveDataWithCredential:credential completion:handleResult];
+//
+//                    return Nil;
+//                }, ^id (NSError * error) {
+//                    handleResult(Nil, error);
+//                    return Nil;
+//                });
+//            }
+//        }
+//            break;
+//        case bAccountTypeTwitter:
+//        {
+//            if (BChatSDK.socialLogin) {
+//                [BChatSDK.socialLogin loginWithTwitter].thenOnMain(^id(NSArray * array) {
+//                    FIRAuthCredential * credential = [FIRTwitterAuthProvider credentialWithToken:array.firstObject
+//                                                                                          secret:array.lastObject];
+//                    [[FIRAuth auth] signInAndRetrieveDataWithCredential:credential completion:handleResult];
+//                    return Nil;
+//                    
+//                }, ^id (NSError * error) {
+//                    handleResult(Nil, error);
+//                    return Nil;
+//                });
+//            }
+//        }
+//            break;
+//        case bAccountTypeGoogle:
+//        {
+//            if (BChatSDK.socialLogin) {
+//                [BChatSDK.socialLogin loginWithGoogle].thenOnMain(^id(NSArray * array) {
+//                    FIRAuthCredential * credential = [FIRGoogleAuthProvider credentialWithIDToken:array.firstObject
+//                                                                                      accessToken:array.lastObject];
+//                    [[FIRAuth auth] signInAndRetrieveDataWithCredential:credential completion:handleResult];
+//                    return Nil;
+//                    
+//                }, ^id (NSError * error) {
+//                    handleResult(Nil, error);
+//                    return Nil;
+//                });
+//            }
+//        }
             break;
         case bAccountTypeUsername:
         {
@@ -157,11 +157,11 @@
         case bAccountTypeCustom:
             [[FIRAuth auth] signInWithCustomToken:details.token completion:handleResult];
             break;
-        case bAccountTypeRegister:
-        {
-            [[FIRAuth auth] createUserWithEmail:details.username password:details.password completion:handleResult];
-        }
-            break;
+//        case bAccountTypeRegister:
+//        {
+//            [[FIRAuth auth] createUserWithEmail:details.username password:details.password completion:handleResult];
+//        }
+//            break;
         case bAccountTypeAnonymous: {
             [[FIRAuth auth] signInAnonymouslyWithCompletion:handleResult];
         }
@@ -198,13 +198,13 @@
     __weak __typeof__(self) weakSelf = self;
     return tokenPromise.thenOnMain(^id(NSString * token) {
         __typeof__(self) strongSelf = weakSelf;
-
+        
         NSString * uid = firebaseUser.uid;
         
         // Save the authentication ID for the current user
         // Set the current user
         [strongSelf setLoginInfo:@{bAuthenticationIDKey: uid,
-                             bTokenKey: [NSString safe: token]}];
+                                   bTokenKey: [NSString safe: token]}];
         
         CCUserWrapper * user = [CCUserWrapper userWithAuthUserData:firebaseUser];
         if (details.name && !user.model.name) {
@@ -215,7 +215,7 @@
             strongSelf->_isAuthenticatedThisSession = YES;
             // Update the user from the remote server
             return [user once].thenOnMain(^id(id<PUserWrapper> user_) {
-
+                
                 // If the user was authenticated automatically
                 if (!details) {
                     [BHookNotification notificationDidAuthenticate:user.model type:bHook_AuthenticationTypeCached];
@@ -229,7 +229,7 @@
                 
                 [BChatSDK.core save];
                 
-//                NSLog(@"User On: %@", user.entityID);
+                //                NSLog(@"User On: %@", user.entityID);
                 
                 // Add listeners here
                 [BChatSDK.event currentUserOn:user.entityID];
@@ -256,14 +256,14 @@
 
 -(RXPromise *) resetPasswordWithCredential: (NSString *) credential {
     RXPromise * promise = [RXPromise new];
-    [[FIRAuth auth] sendPasswordResetWithEmail:credential completion:^(NSError *_Nullable error) {
-        if(!error) {
-            [promise resolveWithResult:Nil];
-        }
-        else {
-            [promise rejectWithReason:error];
-        }
-    }];
+//    [[FIRAuth auth] sendPasswordResetWithEmail:credential completion:^(NSError *_Nullable error) {
+//        if(!error) {
+//            [promise resolveWithResult:Nil];
+//        }
+//        else {
+//            [promise rejectWithReason:error];
+//        }
+//    }];
     return promise;
 }
 

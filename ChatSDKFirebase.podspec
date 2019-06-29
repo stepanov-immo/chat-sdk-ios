@@ -22,8 +22,8 @@ Pod::Spec.new do |s|
 
 	fb.source_files = ['ChatSDKFirebase/FirebaseNetworkAdapter/Classes/**/*']
 	
-    fb.dependency 'Firebase/Auth'
-    fb.dependency 'Firebase/Database'
+    #fb.dependency 'Firebase/Auth'
+    #fb.dependency 'Firebase/Database'
  
 	fb.dependency 'ChatSDK'
   
