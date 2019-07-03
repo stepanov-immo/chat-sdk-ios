@@ -8,7 +8,7 @@
 
 #import "BFirebasePublicThreadHandler.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
 
 @implementation BFirebasePublicThreadHandler
 

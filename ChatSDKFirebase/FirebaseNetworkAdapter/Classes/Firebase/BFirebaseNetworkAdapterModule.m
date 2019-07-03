@@ -6,8 +6,8 @@
 //  Copyright © 2018 deluge. All rights reserved.
 //
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
-#import <ChatSDKFirebase/BFirebaseNetworkAdapterModule.h>
+#import "FirebaseAdapter.h"
+#import "BFirebaseNetworkAdapterModule.h"
 
 @implementation BFirebaseNetworkAdapterModule
 

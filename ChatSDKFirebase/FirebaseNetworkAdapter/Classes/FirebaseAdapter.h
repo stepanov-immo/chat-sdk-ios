@@ -10,6 +10,9 @@
 #define ChatFirebaseAdapter_h
 
 #import <ChatSDK/Core.h>
+//#import <Parse/Parse.h>
+//#import <ParseLiveQuery-Swift.h>
+
 
 //#import <Firebase/Firebase.h>
 typedef void (^FIRAuthTokenCallback)(NSString *_Nullable token, NSError *_Nullable error);

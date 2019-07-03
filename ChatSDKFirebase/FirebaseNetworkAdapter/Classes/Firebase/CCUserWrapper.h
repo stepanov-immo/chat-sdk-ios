@@ -7,19 +7,21 @@
 //
 
 #import <ChatSDK/PUserWrapper.h>
-#import <ChatSDKFirebase/BEntity.h>
+#import "BEntity.h"
 
 @class FIRUser;
 @class FIRDataSnapshot;
+@class PFObject;
 
 @interface CCUserWrapper : BEntity <PUserWrapper> {
     NSObject<PUser> * _model;
 }
 
 +(CCUserWrapper *) userWithModel: (id<PUser>) user;
-+(CCUserWrapper *) userWithSnapshot: (FIRDataSnapshot *) data;
+//+(CCUserWrapper *) userWithSnapshot: (FIRDataSnapshot *) data;
 +(CCUserWrapper *) userWithAuthUserData: (FIRUser *) user;
 +(CCUserWrapper *) userWithEntityID: (NSString *) entityID;
++(CCUserWrapper *) userWithPFObject: (PFObject *) data;
 
 /**
  * @brief Update the user object from Firebase once

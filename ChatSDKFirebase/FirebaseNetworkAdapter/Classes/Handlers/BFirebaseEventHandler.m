@@ -8,7 +8,8 @@
 
 #import "BFirebaseEventHandler.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
+#import "ParseAdapter.h"
 
 @implementation BFirebaseEventHandler
 
@@ -26,6 +27,7 @@
 
 }
 
+// todo
 -(void) onlineOn {
     [[[[FIRDatabase database] reference] child:@".info/connected"] observeSingleEventOfType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * snapshot) {
         if (![snapshot.value isEqual: NSNull.null]) {
@@ -36,19 +38,21 @@
     }];
 }
 
+// todo
 -(void) onlineOff {
     [[[[FIRDatabase database] reference] child:@".info/connected"] removeAllObservers];
 }
 
 -(void) threadsOn: (id<PUser>) user {
     NSString * entityID = user.entityID;
-
-    FIRDatabaseReference * threadsRef = [FIRDatabaseReference userThreadsRef:entityID];
-    [threadsRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * snapshot) {
-        // Returns threads one by one
-        if (snapshot.value != [NSNull null]) {
+    
+    [self observe:@"user_threads" query:[PFQuery userThreads:entityID] childChange:^(PFObject *added, PFObject *removed) {
+        if (added != nil) {
             // Make the new thread
-            CCThreadWrapper * thread = [CCThreadWrapper threadWithEntityID:snapshot.key];
+            PFObject* t = added[@"thread"];
+            NSString* key = t.objectId;
+
+            CCThreadWrapper * thread = [CCThreadWrapper threadWithEntityID:key];
             if (![thread.model.users containsObject:user]) {
                 [thread.model addUser:user];
             }
@@ -59,13 +63,12 @@
             [thread lastMessageOn];
             [thread metaOn];
         }
-    }];
-    
-    [threadsRef observeEventType:FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot * snapshot) {
-        // Returns threads one by one
-        if (snapshot.value != [NSNull null]) {
-            // Make the new thread
-            CCThreadWrapper * thread = [CCThreadWrapper threadWithEntityID:snapshot.key];
+        
+        if (removed != nil) {
+            PFObject* t = added[@"thread"];
+            NSString* key = t.objectId;
+            
+            CCThreadWrapper * thread = [CCThreadWrapper threadWithEntityID:key];
             [thread off];
             [thread messagesOff]; // We need to turn the messages off incase we rejoin the thread
             [thread lastMessageOff];
@@ -76,6 +79,7 @@
     }];
 }
 
+// todo
 -(void) publicThreadsOn: (id<PUser>) user {
     FIRDatabaseReference * publicThreadsRef = [FIRDatabaseReference publicThreadsRef];
 
@@ -107,30 +111,26 @@
 
 -(void) contactsOn: (id<PUser>) user {
     
-    FIRDatabaseReference * ref = [FIRDatabaseReference userContactsRef:BChatSDK.currentUserID];
-    
-    [ref observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * snapshot) {
-        if(snapshot.value) {
-            id<PUser> contact = [BChatSDK.db fetchOrCreateEntityWithID:snapshot.key withType:bUserEntity];
-            if ([snapshot.value isKindOfClass: [NSDictionary class]]) {
-                NSDictionary * dictionaryValue = (NSDictionary *) snapshot.value;
-                NSNumber * type = dictionaryValue[bType];
-                if (type) {
-                    [BChatSDK.contact addLocalContact:contact withType:type.intValue];
-                }
+    [self observe:@"contacts" query:[PFQuery userContacts:BChatSDK.currentUserID] childChange:^(PFObject *added, PFObject *removed) {
+        if(added != nil) {
+            PFObject* t = added[@"contact"];
+            NSString* key = t.objectId;
+            NSNumber* type = added[@"type"]; // bType
+
+            id<PUser> contact = [BChatSDK.db fetchOrCreateEntityWithID:key withType:bUserEntity];
+            if (type) {
+                [BChatSDK.contact addLocalContact:contact withType:type.intValue];
             }
         }
-    }];
-    
-    [ref observeEventType:FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot * snapshot) {
-        if(snapshot.value) {
-            id<PUser> contact = [BChatSDK.db fetchOrCreateEntityWithID:snapshot.key withType:bUserEntity];
-            if ([snapshot.value isKindOfClass: [NSDictionary class]]) {
-                NSDictionary * dictionaryValue = (NSDictionary *) snapshot.value;
-                NSNumber * type = dictionaryValue[bType];
-                if (type) {
-                    [BChatSDK.contact deleteLocalContact:contact withType:type.intValue];
-                }
+        
+        if(removed != nil) {
+            PFObject* t = added[@"contact"];
+            NSString* key = t.objectId;
+            NSNumber* type = added[@"type"]; // bType
+
+            id<PUser> contact = [BChatSDK.db fetchOrCreateEntityWithID:key withType:bUserEntity];
+            if (type) {
+                [BChatSDK.contact deleteLocalContact:contact withType:type.intValue];
             }
         }
     }];
@@ -152,9 +152,8 @@
 }
 
 -(void) threadsOff: (id<PUser>) user {
-    NSString * entityID = user.entityID;
-    FIRDatabaseReference * threadsRef = [FIRDatabaseReference userThreadsRef:entityID];
-    [threadsRef removeAllObservers];
+    //NSString * entityID = user.entityID;
+    [self removeQueryObserver:@"user_threads"];
     
     if (user) {
         for (id<PThread> threadModel in user.threads) {
@@ -164,6 +163,7 @@
     }
 }
 
+// todo
 -(void) publicThreadsOff: (id<PUser>) user {
     FIRDatabaseReference * publicThreadsRef = [FIRDatabaseReference publicThreadsRef];
     for (id<PThread> threadModel in [BChatSDK.core threadsWithType:bThreadTypePublicGroup]) {
@@ -187,6 +187,5 @@
         [BChatSDK.moderation off];
     }
 }
-
 
 @end

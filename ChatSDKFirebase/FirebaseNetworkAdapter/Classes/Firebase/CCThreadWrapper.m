@@ -8,7 +8,8 @@
 
 #import "CCThreadWrapper.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
+#import "ParseAdapter.h"
 
 @implementation CCThreadWrapper
 
@@ -268,40 +269,36 @@
     }
     [((NSManagedObject *)_model) setPath:bUsersPath on:YES];
     
-    // Get the thread data
-    FIRDatabaseReference * threadUsersRef = [FIRDatabaseReference threadUsersRef:self.entityID];
     
-    [threadUsersRef observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * snapshot) {
-        if (![snapshot.value isEqual: [NSNull null]]) {
+    [self observe:@"thread_users_change" query:[PFQuery threadUsers:self.entityID] childChange:^(PFObject *added, PFObject *removed) {
+        if (added != nil) {
             // Update the thread
-            CCUserWrapper * user = [CCUserWrapper userWithSnapshot:snapshot];
+            CCUserWrapper * user = [CCUserWrapper userWithPFObject:added];
             [_model addUser:user.model];
             [user metaOn];
             [[NSNotificationCenter defaultCenter] postNotificationName:bNotificationThreadUsersUpdated object:Nil];
         }
-    }];
-    
-    [threadUsersRef observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * snapshot) {
-        if (![snapshot.value isEqual: [NSNull null]]) {
-            for(NSString * userEntityID in [snapshot.value allKeys]) {
-                if(snapshot.value[userEntityID][bDeletedKey]) {
-                    // Update the thread
-                    CCUserWrapper * user = [CCUserWrapper userWithEntityID:userEntityID];
-                    if (_model.type.intValue ^ bThreadType1to1) {
-                        [_model removeUser:user.model];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:bNotificationThreadUsersUpdated object:Nil];
-                    }
-                }
-            }
+        if (removed != nil) {
+            // Update the thread
+            CCUserWrapper * user = [CCUserWrapper userWithPFObject:removed];
+            [_model removeUser:user.model];
+            [[NSNotificationCenter defaultCenter] postNotificationName:bNotificationThreadUsersUpdated object:Nil];
         }
     }];
     
-    [threadUsersRef observeEventType:FIRDataEventTypeChildRemoved withBlock:^(FIRDataSnapshot * snapshot) {
-        if (![snapshot.value isEqual: [NSNull null]]) {
+    [self observe:@"thread_users_update" query:[PFQuery threadUsers:self.entityID] update:^(PFObject *o) {
+        
+        PFObject* user = o[@"user"];
+        NSString* userEntityID = user.objectId;
+        NSNumber* deleted = o[bDeletedKey]; // ???
+        
+        if(deleted) {
             // Update the thread
-            CCUserWrapper * user = [CCUserWrapper userWithSnapshot:snapshot];
-            [_model removeUser:user.model];
-            [[NSNotificationCenter defaultCenter] postNotificationName:bNotificationThreadUsersUpdated object:Nil];
+            CCUserWrapper * user = [CCUserWrapper userWithEntityID:userEntityID];
+            if (_model.type.intValue ^ bThreadType1to1) {
+                [_model removeUser:user.model];
+                [[NSNotificationCenter defaultCenter] postNotificationName:bNotificationThreadUsersUpdated object:Nil];
+            }
         }
     }];
 }
@@ -311,7 +308,9 @@
     for(id<PUser> user in _model.users) {
         [[CCUserWrapper userWithModel:user.model] off];
     }
-    [[FIRDatabaseReference threadUsersRef:self.entityID] removeAllObservers];
+
+    [self removeQueryObserver:@"thread_users_change"];
+    [self removeQueryObserver:@"thread_users_update"];
 }
 
 /**

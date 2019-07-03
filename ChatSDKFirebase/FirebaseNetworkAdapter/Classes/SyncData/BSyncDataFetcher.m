@@ -8,7 +8,7 @@
 
 #import "BSyncDataFetcher.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
 #import "ChatSDKSyncData.h"
 
 @implementation BSyncDataFetcher

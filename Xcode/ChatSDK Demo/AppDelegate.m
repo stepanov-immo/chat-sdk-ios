@@ -8,15 +8,85 @@
 
 #import "AppDelegate.h"
 #import <ChatSDK/UI.h>
+#import <Parse/Parse.h>
+#import <ParseLiveQuery-Swift.h>
+
+#import "ParseAdapter.h"
 
 @interface AppDelegate ()
-
+@property (nonatomic, strong) PFQuery *query;
+@property (nonatomic, strong) PFLiveQuerySubscription *subscription1;
+@property (nonatomic, strong) PFLiveQuerySubscription *subscription2;
 @end
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
+    [Parse initializeWithConfiguration:[ParseClientConfiguration configurationWithBlock:^(id<ParseMutableClientConfiguration> configuration) {
+        configuration.applicationId = @"com.mdcm.testchatsdk";
+        configuration.clientKey = @"";
+        configuration.server = @"http://localhost:1337/parse";
+        //configuration.server = @"http://10.192.160.10:1337/parse";
+    }]];
+
+//    [[PFQuery queryWithClassName:@"MyUser"] findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+//        NSLog(@"%@", objects);
+//
+//        PFObject *myUser = [PFObject objectWithClassName:@"MyUser"];
+//        myUser[@"name"] = @"my user2";
+//        [myUser saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+//            NSLog(@"error %@", error);
+//
+//            [[PFQuery queryWithClassName:@"MyUser"] findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+//                NSLog(@"%@", objects);
+//            }];
+//
+//        }];
+//    }];
+
+//    PFObject *myUser = [PFObject objectWithClassName:@"MyUser"];
+//    myUser[@"name"] = @"my user3";
+//    //NSString* objId = myUser.objectId;
+//    [myUser saveEventually];
+//    //[myUser pinInBackground];
+//
+//    {
+//        PFObject *userContact = [PFObject objectWithClassName:@"UserContact"];
+//        userContact[@"type"] = @"0";
+//        userContact[@"user"] = myUser;
+//        [userContact saveEventually];
+//        id user = userContact[@"user"];
+//        NSLog(@"%@", user);
+//    }
+    
+//    PFObject *gameScore = [PFObject objectWithClassName:@"GameScore"];
+//    gameScore[@"playerName"] = @"test1";
+//    [gameScore saveEventually];
+    
+    
+    [self observe:@"user_thread" query:[PFQuery userThreads:@"7PwzQJNvxU"] childChange:^(PFObject *added, PFObject *removed) {
+        if (added != nil) {
+            NSLog(@"child add %@", added);
+        }
+        if (removed != nil) {
+            NSLog(@"child remove %@", removed);
+        }
+    }];
+
+    [self observe:@"user" query:[PFQuery userThreads:@"7PwzQJNvxU"] update:^(PFObject *o) {
+        NSLog(@"update %@", o);
+    }];
+
+//    PFQuery *query = [PFQuery queryWithClassName:@"GameScore"];
+//    query.cachePolicy = kPFCachePolicyCacheThenNetwork;
+//    [query getObjectInBackgroundWithId:@"9WJChaGT60" block:^(PFObject *gameScore, NSError *error) {
+//        // Do something with the returned PFObject in the gameScore variable.
+//        NSLog(@"%@", gameScore);
+//        gameScore[@"score"] = @9999;
+//        [gameScore saveEventually];
+//    }];
+    
     // Create a network adapter to communicate with Firebase
     // The network adapter handles network traffic
 

@@ -8,7 +8,7 @@
 
 #import "CCMessageWrapper.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
 
 @implementation CCMessageWrapper
 

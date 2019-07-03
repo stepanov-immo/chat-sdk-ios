@@ -8,7 +8,7 @@
 
 #import "BFirebaseCoreHandler.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
 
 @implementation BFirebaseCoreHandler
 

@@ -8,7 +8,7 @@
 
 #import "Firebase+Paths.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
 
 
 @implementation FIRUser

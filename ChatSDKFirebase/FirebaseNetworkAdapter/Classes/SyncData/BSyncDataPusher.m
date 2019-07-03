@@ -9,7 +9,7 @@
 #import "BSyncDataPusher.h"
 #import "ChatSDKSyncData.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
 
 @implementation BSyncDataPusher
 

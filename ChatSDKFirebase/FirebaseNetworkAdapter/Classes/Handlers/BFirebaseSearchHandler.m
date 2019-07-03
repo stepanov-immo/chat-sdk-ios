@@ -8,7 +8,7 @@
 
 #import "BFirebaseSearchHandler.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
 
 @implementation BFirebaseSearchHandler
 
@@ -35,10 +35,11 @@
                     for(NSString * key in [snapshot.value allKeys]) {
                         NSDictionary * meta = snapshot.value[key][bMetaPath];
                         if(meta && [meta[index] containsString:value]) {
-                            CCUserWrapper * wrapper = [CCUserWrapper userWithSnapshot:[snapshot childSnapshotForPath:key]];
-                            if(![wrapper.model isEqual:BChatSDK.currentUser]) {
-                                userAdded(wrapper.model);
-                            }
+// todo
+//                            CCUserWrapper * wrapper = [CCUserWrapper userWithSnapshot:[snapshot childSnapshotForPath:key]];
+//                            if(![wrapper.model isEqual:BChatSDK.currentUser]) {
+//                                userAdded(wrapper.model);
+//                            }
                         }
                     }
                 }

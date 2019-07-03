@@ -24,6 +24,8 @@ Pod::Spec.new do |s|
 	
     #fb.dependency 'Firebase/Auth'
     #fb.dependency 'Firebase/Database'
+    fb.dependency 'Parse'
+    fb.dependency 'ParseLiveQuery'
  
 	fb.dependency 'ChatSDK'
   

@@ -6,7 +6,8 @@
 //  Copyright (c) 2015 deluge. All rights reserved.
 //
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
+#import "ParseAdapter.h"
 
 @implementation CCUserWrapper
 
@@ -40,17 +41,31 @@
     return [[self alloc] initWithModel: user];
 }
 
-+(id) userWithSnapshot: (FIRDataSnapshot *) data {
-    return [[self alloc] initWithSnapshot:data];
-}
+//+(id) userWithSnapshot: (FIRDataSnapshot *) data {
+//    return [[self alloc] initWithSnapshot:data];
+//}
+//
+//
+//-(id) initWithSnapshot: (FIRDataSnapshot *) data {
+//    if ((self = [self init])) {
+//        _model = [BChatSDK.db fetchOrCreateEntityWithID:data.key withType:bUserEntity];
+//        [self deserialize:data.value];
+//    }
+//    return self;
+//}
 
--(id) initWithSnapshot: (FIRDataSnapshot *) data {
++(CCUserWrapper *)userWithPFObject:(PFObject *)data {
+    return [[self alloc] initWithPFObject:data];
+}
+-(id) initWithPFObject:(PFObject *)data {
     if ((self = [self init])) {
-        _model = [BChatSDK.db fetchOrCreateEntityWithID:data.key withType:bUserEntity];
-        [self deserialize:data.value];
+        _model = [BChatSDK.db fetchOrCreateEntityWithID:data.objectId withType:bUserEntity];
+        [self deserialize:data];
     }
     return self;
 }
+
+
 
 -(void) updateUserFromAuthUserData: (FIRUser *) user {
     
@@ -201,12 +216,10 @@
         return promise;
     }
     ((NSManagedObject *)_model).on = YES;
-
-    FIRDatabaseReference * ref = [FIRDatabaseReference userRef:self.entityID];
     
-    [ref observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * snapshot) {
-        if(![snapshot.value isEqual: [NSNull null]]) {
-            [promise resolveWithResult:[self deserialize:snapshot.value].thenOnMain(^id(id success) {
+    [self observe:@"user" query:[PFQuery user:self.entityID] update:^(PFObject *o) {
+        if(o != nil) {
+            [promise resolveWithResult:[self deserialize:o].thenOnMain(^id(id success) {
                 return self;
             }, Nil)];
         }
@@ -214,6 +227,7 @@
             [promise resolveWithResult:Nil];
         }
     }];
+
     return promise;
 }
 
@@ -221,8 +235,8 @@
     
     ((NSManagedObject *)_model).on = NO;
     
-    FIRDatabaseReference * ref = [FIRDatabaseReference userRef:self.entityID];
-    [ref removeAllObservers];
+    [self removeQueryObserver:@"user"];
+    
     [self metaOff];
     [self onlineOff];
 }
@@ -342,7 +356,7 @@
 //    return promise;
 }
 
--(RXPromise *) deserialize: (NSDictionary *) value {
+-(RXPromise *) deserialize: (PFObject *)value {
     
     NSNumber * online = value[bOnlinePath];
     if (online) {

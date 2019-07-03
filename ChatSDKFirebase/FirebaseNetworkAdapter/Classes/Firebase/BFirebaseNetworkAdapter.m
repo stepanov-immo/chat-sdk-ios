@@ -8,7 +8,7 @@
 
 #import "BFirebaseNetworkAdapter.h"
 
-#import <ChatSDKFirebase/FirebaseAdapter.h>
+#import "FirebaseAdapter.h"
 
 @implementation BFirebaseNetworkAdapter
 
