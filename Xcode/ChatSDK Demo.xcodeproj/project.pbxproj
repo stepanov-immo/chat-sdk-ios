@@ -22,11 +22,6 @@
 		D61FB3E222CCC8E300ABD11B /* CCUserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3B522CCC8E300ABD11B /* CCUserWrapper.m */; };
 		D61FB3E322CCC8E300ABD11B /* NSManagedObject+Status.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3B822CCC8E300ABD11B /* NSManagedObject+Status.m */; };
 		D61FB3E422CCC8E300ABD11B /* Firebase+Paths.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3B922CCC8E300ABD11B /* Firebase+Paths.m */; };
-		D61FB3E522CCC8E300ABD11B /* BSyncDataPusher.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3C322CCC8E300ABD11B /* BSyncDataPusher.m */; };
-		D61FB3E622CCC8E300ABD11B /* BSyncDataFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3C522CCC8E300ABD11B /* BSyncDataFetcher.m */; };
-		D61FB3E722CCC8E300ABD11B /* BInviteSyncItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3C622CCC8E300ABD11B /* BInviteSyncItem.m */; };
-		D61FB3E822CCC8E300ABD11B /* BSyncDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3C822CCC8E300ABD11B /* BSyncDataManager.m */; };
-		D61FB3E922CCC8E300ABD11B /* BSyncItem.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3C922CCC8E300ABD11B /* BSyncItem.m */; };
 		D61FB3EA22CCC8E300ABD11B /* BFirebaseUsersHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3CB22CCC8E300ABD11B /* BFirebaseUsersHandler.m */; };
 		D61FB3EB22CCC8E300ABD11B /* BFirebaseSearchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3CC22CCC8E300ABD11B /* BFirebaseSearchHandler.m */; };
 		D61FB3EC22CCC8E300ABD11B /* BFirebaseBlockingHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB3CD22CCC8E300ABD11B /* BFirebaseBlockingHandler.m */; };
@@ -76,19 +71,6 @@
 		D61FB3B922CCC8E300ABD11B /* Firebase+Paths.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Firebase+Paths.m"; sourceTree = "<group>"; };
 		D61FB3BA22CCC8E300ABD11B /* NSManagedObject+Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Status.h"; sourceTree = "<group>"; };
 		D61FB3BB22CCC8E300ABD11B /* FirebaseAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FirebaseAdapter.h; path = ../../ChatSDKFirebase/FirebaseNetworkAdapter/Classes/FirebaseAdapter.h; sourceTree = "<group>"; };
-		D61FB3BD22CCC8E300ABD11B /* BSyncDataPusher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSyncDataPusher.h; sourceTree = "<group>"; };
-		D61FB3BE22CCC8E300ABD11B /* ChatSDKSyncData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatSDKSyncData.h; sourceTree = "<group>"; };
-		D61FB3BF22CCC8E300ABD11B /* BInviteSyncItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BInviteSyncItem.h; sourceTree = "<group>"; };
-		D61FB3C022CCC8E300ABD11B /* BSyncDataFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSyncDataFetcher.h; sourceTree = "<group>"; };
-		D61FB3C122CCC8E300ABD11B /* BSyncItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSyncItem.h; sourceTree = "<group>"; };
-		D61FB3C222CCC8E300ABD11B /* BSyncDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSyncDataManager.h; sourceTree = "<group>"; };
-		D61FB3C322CCC8E300ABD11B /* BSyncDataPusher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSyncDataPusher.m; sourceTree = "<group>"; };
-		D61FB3C422CCC8E300ABD11B /* BSyncItemDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSyncItemDelegate.h; sourceTree = "<group>"; };
-		D61FB3C522CCC8E300ABD11B /* BSyncDataFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSyncDataFetcher.m; sourceTree = "<group>"; };
-		D61FB3C622CCC8E300ABD11B /* BInviteSyncItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BInviteSyncItem.m; sourceTree = "<group>"; };
-		D61FB3C722CCC8E300ABD11B /* BSyncDataListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSyncDataListener.h; sourceTree = "<group>"; };
-		D61FB3C822CCC8E300ABD11B /* BSyncDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSyncDataManager.m; sourceTree = "<group>"; };
-		D61FB3C922CCC8E300ABD11B /* BSyncItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSyncItem.m; sourceTree = "<group>"; };
 		D61FB3CB22CCC8E300ABD11B /* BFirebaseUsersHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFirebaseUsersHandler.m; sourceTree = "<group>"; };
 		D61FB3CC22CCC8E300ABD11B /* BFirebaseSearchHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFirebaseSearchHandler.m; sourceTree = "<group>"; };
 		D61FB3CD22CCC8E300ABD11B /* BFirebaseBlockingHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFirebaseBlockingHandler.m; sourceTree = "<group>"; };
@@ -196,7 +178,6 @@
 				D61FB3B622CCC8E300ABD11B /* Categories */,
 				D61FB3A922CCC8E300ABD11B /* Firebase */,
 				D61FB3CA22CCC8E300ABD11B /* Handlers */,
-				D61FB3BC22CCC8E300ABD11B /* SyncData */,
 			);
 			name = FirebaseAdapater;
 			sourceTree = "<group>";
@@ -231,27 +212,6 @@
 			);
 			name = Categories;
 			path = ../../ChatSDKFirebase/FirebaseNetworkAdapter/Classes/Categories;
-			sourceTree = "<group>";
-		};
-		D61FB3BC22CCC8E300ABD11B /* SyncData */ = {
-			isa = PBXGroup;
-			children = (
-				D61FB3BE22CCC8E300ABD11B /* ChatSDKSyncData.h */,
-				D61FB3C422CCC8E300ABD11B /* BSyncItemDelegate.h */,
-				D61FB3C722CCC8E300ABD11B /* BSyncDataListener.h */,
-				D61FB3BD22CCC8E300ABD11B /* BSyncDataPusher.h */,
-				D61FB3C322CCC8E300ABD11B /* BSyncDataPusher.m */,
-				D61FB3BF22CCC8E300ABD11B /* BInviteSyncItem.h */,
-				D61FB3C622CCC8E300ABD11B /* BInviteSyncItem.m */,
-				D61FB3C022CCC8E300ABD11B /* BSyncDataFetcher.h */,
-				D61FB3C522CCC8E300ABD11B /* BSyncDataFetcher.m */,
-				D61FB3C122CCC8E300ABD11B /* BSyncItem.h */,
-				D61FB3C922CCC8E300ABD11B /* BSyncItem.m */,
-				D61FB3C222CCC8E300ABD11B /* BSyncDataManager.h */,
-				D61FB3C822CCC8E300ABD11B /* BSyncDataManager.m */,
-			);
-			name = SyncData;
-			path = ../../ChatSDKFirebase/FirebaseNetworkAdapter/Classes/SyncData;
 			sourceTree = "<group>";
 		};
 		D61FB3CA22CCC8E300ABD11B /* Handlers */ = {
@@ -473,18 +433,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D61FB3E522CCC8E300ABD11B /* BSyncDataPusher.m in Sources */,
 				D61FB3EF22CCC8E300ABD11B /* BFirebasePublicThreadHandler.m in Sources */,
-				D61FB3E822CCC8E300ABD11B /* BSyncDataManager.m in Sources */,
 				D61FB3EC22CCC8E300ABD11B /* BFirebaseBlockingHandler.m in Sources */,
 				D61FB3E422CCC8E300ABD11B /* Firebase+Paths.m in Sources */,
 				D61FB3E022CCC8E300ABD11B /* BEntity.m in Sources */,
 				D61FB3EB22CCC8E300ABD11B /* BFirebaseSearchHandler.m in Sources */,
-				D61FB3E922CCC8E300ABD11B /* BSyncItem.m in Sources */,
 				D61FB3F022CCC8E300ABD11B /* BFirebaseModerationHandler.m in Sources */,
 				D61FB3FA22CCD26300ABD11B /* PFQuery+Paths.m in Sources */,
 				D61FB3F122CCC8E300ABD11B /* BFirebaseContactHandler.m in Sources */,
-				D61FB3E622CCC8E300ABD11B /* BSyncDataFetcher.m in Sources */,
 				D61FB3DE22CCC8E300ABD11B /* CCThreadWrapper.m in Sources */,
 				D61FB3E222CCC8E300ABD11B /* CCUserWrapper.m in Sources */,
 				D61FB3EE22CCC8E300ABD11B /* BFirebaseEventHandler.m in Sources */,
@@ -499,7 +455,6 @@
 				D61FB3ED22CCC8E300ABD11B /* BFirebaseAuthenticationHandler.m in Sources */,
 				B53797E2223659230003F6F8 /* ApiExamples.m in Sources */,
 				D61FB3DF22CCC8E300ABD11B /* CCMessageWrapper.m in Sources */,
-				D61FB3E722CCC8E300ABD11B /* BInviteSyncItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

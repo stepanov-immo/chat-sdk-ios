@@ -12,6 +12,11 @@
 
 @implementation PFQuery (Paths)
 
++(PFQuery *)online:(NSString *)userId {
+    PFQuery *query = [PFQuery queryWithClassName:@"Online"];
+    return [query whereKey:@"user" equalTo:[PFObject objectWithoutDataWithClassName:@"MyUser" objectId:userId]];
+}
+
 +(PFQuery *)users {
     PFQuery *query = [PFQuery queryWithClassName:@"MyUser"];
     return [query whereKeyExists:@"name"];
@@ -22,7 +27,7 @@
     return [query whereKey:@"objectId" equalTo:userId];
 }
 
-+(PFQuery *)userThread:(NSString *)userId {
++(PFQuery *)userThreads:(NSString *)userId {
     PFQuery *query = [PFQuery queryWithClassName:@"UserThread"];
     return [query whereKey:@"user" equalTo:[PFObject objectWithoutDataWithClassName:@"MyUser" objectId:userId]];
 }

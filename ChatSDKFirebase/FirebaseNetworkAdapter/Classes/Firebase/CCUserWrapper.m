@@ -250,6 +250,20 @@
     }
     ((NSManagedObject *)_model).metaOn = YES;
     
+    // ???
+    [self observe:@"user_meta" query:[PFQuery user:self.entityID] update:^(PFObject *o) {
+        NSDictionary* value = o[bMetaPath];
+        if(value != nil) {
+            [promise resolveWithResult:[self deserializeMeta:value].thenOnMain(^id(id success) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:bNotificationUserUpdated object:Nil userInfo:@{bNotificationUserUpdated_PUser: self.model}];
+                return self;
+            }, Nil)];
+        }
+        else {
+            [promise resolveWithResult:Nil];
+        }
+    }];
+    
     FIRDatabaseReference * ref = [FIRDatabaseReference userMetaRef:self.entityID];
     
     [ref observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * snapshot) {
@@ -269,8 +283,7 @@
 
 -(void) metaOff {
     ((NSManagedObject *)_model).metaOn = NO;
-    FIRDatabaseReference * ref = [FIRDatabaseReference userMetaRef:self.entityID];
-    [ref removeAllObservers];
+    [self removeQueryObserver:@"user_meta"];
 }
 
 -(RXPromise *) onlineOn {
@@ -283,11 +296,10 @@
     }
     ((NSManagedObject *)_model).onlineOn = YES;
     
-    FIRDatabaseReference * ref = [FIRDatabaseReference userOnlineRef:self.entityID];
-    
-    [ref observeEventType:FIRDataEventTypeValue withBlock:^(FIRDataSnapshot * snapshot) {
-        if(![snapshot.value isEqual: [NSNull null]]) {
-            self.model.online = [snapshot.value isEqualToNumber:@1] ? @(YES) : @(NO);
+    // ???
+    [self observe:@"user_online" query:[PFQuery user:self.entityID] update:^(PFObject *o) {
+        if(o != nil) {
+            self.model.online = o[bOnlinePath];
         }
         else {
             self.model.online = @NO;
@@ -301,18 +313,17 @@
 }
 
 -(void) onlineOff {
-    
     ((NSManagedObject *)_model).onlineOn = NO;
-    FIRDatabaseReference * userRef = [FIRDatabaseReference userOnlineRef:self.entityID];
-    [userRef removeAllObservers];
+    [self removeQueryObserver:@"user_online"];
 }
 
 -(RXPromise *) push {
     RXPromise * promise = [RXPromise new];
     
-    FIRDatabaseReference * ref = [FIRDatabaseReference userRef:self.entityID];
-    
     [self updateFirebaseUser];
+    
+
+    FIRDatabaseReference * ref = [FIRDatabaseReference userRef:self.entityID];
     
     [ref updateChildValues:[self serialize] withCompletionBlock:^(NSError * error, FIRDatabaseReference * ref) {
         if (!error) {
@@ -460,22 +471,48 @@
 
 
 -(void) goOnline {
-    // When the push is complete mark the user as online
-    FIRDatabaseReference * userOnlineRef = [FIRDatabaseReference userOnlineRef:self.entityID];
-    [userOnlineRef setValue:@YES];
-    [userOnlineRef onDisconnectSetValue:@NO];
-
-    FIRDatabaseReference * onlineRef = [FIRDatabaseReference onlineRef:self.entityID];
-    [onlineRef setValue:@{bTimeKey: [FIRServerValue timestamp],
-                          bUID: _model.entityID}];
+//    // When the push is complete mark the user as online
+//    FIRDatabaseReference * userOnlineRef = [FIRDatabaseReference userOnlineRef:self.entityID];
+//    [userOnlineRef setValue:@YES];
+//    [userOnlineRef onDisconnectSetValue:@NO];
+//
+//    FIRDatabaseReference * onlineRef = [FIRDatabaseReference onlineRef:self.entityID];
+//    [onlineRef setValue:@{bTimeKey: [FIRServerValue timestamp],
+//                          bUID: _model.entityID}];
+//
+//    [onlineRef onDisconnectRemoveValue];
     
-    [onlineRef onDisconnectRemoveValue];
+    [[PFQuery user:self.entityID] getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (object != nil) {
+            object[bOnlinePath] = @YES;
+            [object saveInBackground];
+        }
+    }];
+    
+    [[PFQuery online:self.entityID] getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (object != nil) {
+            object[bTimeKey] = [FIRServerValue timestamp];
+            object[bUID] = _model.entityID;
+            [object saveInBackground];
+        }
+    }];
+
 }
 
 -(void) goOffline {
-    [[FIRDatabaseReference userOnlineRef:self.entityID] removeValue];
-    [[FIRDatabaseReference onlineRef:self.entityID] removeValue];
-//    [userOnlineRef setValue:@NO];
+//    [[FIRDatabaseReference userOnlineRef:self.entityID] removeValue];
+//    [[FIRDatabaseReference onlineRef:self.entityID] removeValue];
+////    [userOnlineRef setValue:@NO];
+    
+    [[PFQuery user:self.entityID] getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (object != nil) {
+            [object removeObjectForKey:bOnlinePath];
+            [object saveInBackground];
+        }
+    }];
+    [[PFQuery online:self.entityID] getFirstObjectInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        [object deleteInBackground];
+    }];
 }
 
 -(void) removeThreadOnDisconnect: (NSString *) entityID {

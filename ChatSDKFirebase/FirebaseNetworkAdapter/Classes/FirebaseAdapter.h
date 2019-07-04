@@ -76,7 +76,7 @@ typedef NS_ENUM(NSInteger, FIRDataEventType) {
 typedef NSUInteger FIRDatabaseHandle NS_SWIFT_NAME(DatabaseHandle);
 
 @interface FIRServerValue : NSObject
-+ (NSDictionary *) timestamp;
++ (NSNumber *) timestamp;
 @end
 
 @interface FIRDataSnapshot : NSObject

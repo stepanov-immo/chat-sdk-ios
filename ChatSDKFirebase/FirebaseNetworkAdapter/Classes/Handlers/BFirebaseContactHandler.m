@@ -7,16 +7,25 @@
 
 #import "BFirebaseContactHandler.h"
 #import "FirebaseAdapter.h"
+#import "ParseAdapter.h"
 
 @implementation BFirebaseContactHandler
 
 -(RXPromise *) addContact: (id<PUser>) contact withType: (bUserConnectionType) type {
     RXPromise * promise = [RXPromise new];
     
-    FIRDatabaseReference * ref = [[FIRDatabaseReference userContactsRef:BChatSDK.currentUserID] child:contact.entityID];
-    [ref setValue:@{bType: @(type)} withCompletionBlock:^(NSError * error, FIRDatabaseReference * ref) {
-        if (!error) {
-            [promise resolveWithResult: Nil];
+    PFObject* c = [PFObject objectWithoutDataWithClassName:@"MyUser" objectId:contact.entityID];
+    PFQuery* query = [[PFQuery userContacts:BChatSDK.currentUserID] whereKey:@"contact" equalTo:c];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject* object, NSError* error) {
+        if (object != nil) {
+            object[bType] = @(type);
+            [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if (succeeded) {
+                    [promise resolveWithResult: Nil];
+                } else {
+                    [promise rejectWithReason:error];
+                }
+            }];
         } else {
             [promise rejectWithReason:error];
         }
@@ -31,10 +40,18 @@
 -(RXPromise *) deleteContact: (id<PUser>) contact withType:(bUserConnectionType)type {
     RXPromise * promise = [RXPromise new];
     
-    FIRDatabaseReference * ref = [[FIRDatabaseReference userContactsRef:BChatSDK.currentUserID] child:contact.entityID];
-    [ref removeValueWithCompletionBlock:^(NSError * error, FIRDatabaseReference * ref) {
-        if (!error) {
-            [promise resolveWithResult: Nil];
+    PFObject* c = [PFObject objectWithoutDataWithClassName:@"MyUser" objectId:contact.entityID];
+    PFQuery* query = [[PFQuery userContacts:BChatSDK.currentUserID] whereKey:@"contact" equalTo:c];
+    [query getFirstObjectInBackgroundWithBlock:^(PFObject* object, NSError* error) {
+        if (object != nil) {
+            [object removeObjectForKey:bType];
+            [object saveInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if (succeeded) {
+                    [promise resolveWithResult: Nil];
+                } else {
+                    [promise rejectWithReason:error];
+                }
+            }];
         } else {
             [promise rejectWithReason:error];
         }

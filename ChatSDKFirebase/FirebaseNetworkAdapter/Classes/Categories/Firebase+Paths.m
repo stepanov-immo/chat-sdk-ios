@@ -31,7 +31,7 @@
 @end
 
 @implementation FIRServerValue
-+(NSDictionary *)timestamp { return @{}; }
++(NSNumber *)timestamp { return @([[NSDate date] timeIntervalSince1970] * 1000); }
 @end
 @implementation FIRDataSnapshot
 -(NSString *)key { return @"key1"; }

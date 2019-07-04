@@ -10,6 +10,8 @@
 
 @interface PFQuery (Paths)
 
++(PFQuery*)online:(NSString*)userId;
+
 +(PFQuery*)users;
 +(PFQuery*)user:(NSString*)userId;
 +(PFQuery*)userThreads:(NSString*)userId;
