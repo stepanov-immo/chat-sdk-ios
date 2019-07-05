@@ -14,5 +14,9 @@
 @interface CCUserWrapper : NSObject<PUserWrapper>
 
 - (instancetype)initWithAuthUserData:(PFUser *) user;
+- (instancetype)initWithModel: (id<PUser>) user;
+
+-(RXPromise *) onlineOn; // include metaOn
+-(void) onlineOff;
 
 @end

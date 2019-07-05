@@ -9,6 +9,10 @@
 #import "BFirebaseNetworkAdapter.h"
 #import <Parse/Parse.h>
 #import "ParseAuthenticationHandler.h"
+#import "ParseSearchHandler.h"
+#import "ParseCoreHandler.h"
+#import "ParseContactHandler.h"
+#import "ParseEventHandler.h"
 
 @implementation BFirebaseNetworkAdapter
 
@@ -39,15 +43,15 @@
 //        
 //        }
 //        
-//        self.core = [[BFirebaseCoreHandler alloc] init];
+        self.core = [[ParseCoreHandler alloc] init];
         self.auth = [[ParseAuthenticationHandler alloc] init];
-//        self.search = [[BFirebaseSearchHandler alloc] init];
+        self.search = [[ParseSearchHandler alloc] init];
 //        self.moderation = [[BFirebaseModerationHandler alloc] init];
-//        self.contact = [[BBaseContactHandler alloc] init];
+        self.contact = [[ParseContactHandler alloc] init];
 //        self.publicThread = [[BFirebasePublicThreadHandler alloc] init];
 //        self.users = [[BFirebaseUsersHandler alloc] init];
 //        self.contact = [[BFirebaseContactHandler alloc] init];
-//        self.event = [[BFirebaseEventHandler alloc] init];
+        self.event = [[ParseEventHandler alloc] init];
 
     }
     return self;

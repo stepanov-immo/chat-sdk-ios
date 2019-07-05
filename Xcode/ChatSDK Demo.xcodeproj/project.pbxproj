@@ -18,6 +18,12 @@
 		D61FB40422CE4CE600ABD11B /* BFirebaseNetworkAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB40022CE4CE600ABD11B /* BFirebaseNetworkAdapter.m */; };
 		D61FB40A22CE554700ABD11B /* ParseAuthenticationHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB40922CE554700ABD11B /* ParseAuthenticationHandler.m */; };
 		D61FB40D22CE557A00ABD11B /* CCUserWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB40C22CE557A00ABD11B /* CCUserWrapper.m */; };
+		D61FB41022CF4A0700ABD11B /* ParseSearchHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB40F22CF4A0700ABD11B /* ParseSearchHandler.m */; };
+		D61FB41322CF50BC00ABD11B /* ParseCoreHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB41222CF50BC00ABD11B /* ParseCoreHandler.m */; };
+		D61FB41622CF55C500ABD11B /* ParseContactHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB41522CF55C500ABD11B /* ParseContactHandler.m */; };
+		D61FB41922CF652100ABD11B /* ParseEventHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB41822CF652100ABD11B /* ParseEventHandler.m */; };
+		D61FB41C22CF8C6D00ABD11B /* NSObject+ParseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB41B22CF8C6D00ABD11B /* NSObject+ParseHelper.m */; };
+		D61FB41F22CF940D00ABD11B /* NSManagedObject+Status.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB41E22CF940D00ABD11B /* NSManagedObject+Status.m */; };
 		D7BAA270E791D36EA9DB4DFE /* Pods_ChatSDK_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9709095593724B15466CB732 /* Pods_ChatSDK_Demo.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +53,18 @@
 		D61FB40922CE554700ABD11B /* ParseAuthenticationHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ParseAuthenticationHandler.m; sourceTree = "<group>"; };
 		D61FB40B22CE557A00ABD11B /* CCUserWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCUserWrapper.h; sourceTree = "<group>"; };
 		D61FB40C22CE557A00ABD11B /* CCUserWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCUserWrapper.m; sourceTree = "<group>"; };
+		D61FB40E22CF4A0700ABD11B /* ParseSearchHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParseSearchHandler.h; sourceTree = "<group>"; };
+		D61FB40F22CF4A0700ABD11B /* ParseSearchHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParseSearchHandler.m; sourceTree = "<group>"; };
+		D61FB41122CF50BC00ABD11B /* ParseCoreHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParseCoreHandler.h; sourceTree = "<group>"; };
+		D61FB41222CF50BC00ABD11B /* ParseCoreHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParseCoreHandler.m; sourceTree = "<group>"; };
+		D61FB41422CF55C500ABD11B /* ParseContactHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParseContactHandler.h; sourceTree = "<group>"; };
+		D61FB41522CF55C500ABD11B /* ParseContactHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParseContactHandler.m; sourceTree = "<group>"; };
+		D61FB41722CF652100ABD11B /* ParseEventHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParseEventHandler.h; sourceTree = "<group>"; };
+		D61FB41822CF652100ABD11B /* ParseEventHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParseEventHandler.m; sourceTree = "<group>"; };
+		D61FB41A22CF8C6D00ABD11B /* NSObject+ParseHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+ParseHelper.h"; sourceTree = "<group>"; };
+		D61FB41B22CF8C6D00ABD11B /* NSObject+ParseHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+ParseHelper.m"; sourceTree = "<group>"; };
+		D61FB41D22CF940D00ABD11B /* NSManagedObject+Status.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+Status.h"; sourceTree = "<group>"; };
+		D61FB41E22CF940D00ABD11B /* NSManagedObject+Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Status.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,8 +144,12 @@
 		D61FB3FE22CE47DA00ABD11B /* ParseAdapter */ = {
 			isa = PBXGroup;
 			children = (
+				D61FB41A22CF8C6D00ABD11B /* NSObject+ParseHelper.h */,
+				D61FB41B22CF8C6D00ABD11B /* NSObject+ParseHelper.m */,
 				D61FB40B22CE557A00ABD11B /* CCUserWrapper.h */,
 				D61FB40C22CE557A00ABD11B /* CCUserWrapper.m */,
+				D61FB41D22CF940D00ABD11B /* NSManagedObject+Status.h */,
+				D61FB41E22CF940D00ABD11B /* NSManagedObject+Status.m */,
 				D61FB40522CE4DF700ABD11B /* Handlers */,
 				D61FB40222CE4CE600ABD11B /* BFirebaseNetworkAdapter.h */,
 				D61FB40022CE4CE600ABD11B /* BFirebaseNetworkAdapter.m */,
@@ -142,6 +164,14 @@
 			children = (
 				D61FB40622CE4E2500ABD11B /* ParseAuthenticationHandler.h */,
 				D61FB40922CE554700ABD11B /* ParseAuthenticationHandler.m */,
+				D61FB40E22CF4A0700ABD11B /* ParseSearchHandler.h */,
+				D61FB40F22CF4A0700ABD11B /* ParseSearchHandler.m */,
+				D61FB41122CF50BC00ABD11B /* ParseCoreHandler.h */,
+				D61FB41222CF50BC00ABD11B /* ParseCoreHandler.m */,
+				D61FB41422CF55C500ABD11B /* ParseContactHandler.h */,
+				D61FB41522CF55C500ABD11B /* ParseContactHandler.m */,
+				D61FB41722CF652100ABD11B /* ParseEventHandler.h */,
+				D61FB41822CF652100ABD11B /* ParseEventHandler.m */,
 			);
 			name = Handlers;
 			sourceTree = "<group>";
@@ -328,13 +358,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D61FB41922CF652100ABD11B /* ParseEventHandler.m in Sources */,
 				B5081AC81F56C04B0015417B /* AppDelegate.m in Sources */,
 				D61FB40A22CE554700ABD11B /* ParseAuthenticationHandler.m in Sources */,
 				B5081AC91F56C04B0015417B /* main.m in Sources */,
 				D61FB40422CE4CE600ABD11B /* BFirebaseNetworkAdapter.m in Sources */,
 				D61FB40322CE4CE600ABD11B /* BFirebaseNetworkAdapterModule.m in Sources */,
 				D61FB40D22CE557A00ABD11B /* CCUserWrapper.m in Sources */,
+				D61FB41C22CF8C6D00ABD11B /* NSObject+ParseHelper.m in Sources */,
+				D61FB41022CF4A0700ABD11B /* ParseSearchHandler.m in Sources */,
+				D61FB41F22CF940D00ABD11B /* NSManagedObject+Status.m in Sources */,
+				D61FB41622CF55C500ABD11B /* ParseContactHandler.m in Sources */,
 				B53797E2223659230003F6F8 /* ApiExamples.m in Sources */,
+				D61FB41322CF50BC00ABD11B /* ParseCoreHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,7 +515,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "ChatSDK Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mdcm.testchatsdk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mdcm.testchatsdk2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -496,7 +532,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = "ChatSDK Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.mdcm.testchatsdk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mdcm.testchatsdk2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
