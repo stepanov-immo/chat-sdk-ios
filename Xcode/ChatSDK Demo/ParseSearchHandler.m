@@ -31,7 +31,7 @@
             [[PFUser query] findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
                 if (objects != nil) {
                     for (PFUser* user in objects) {
-                        CCUserWrapper * wrapper = [[CCUserWrapper alloc]initWithAuthUserData:user];
+                        CCUserWrapper * wrapper = [CCUserWrapper userWithAuthUserData:user];
                         if(![wrapper.model isEqual:BChatSDK.currentUser]) {
                             userAdded(wrapper.model);
                         }

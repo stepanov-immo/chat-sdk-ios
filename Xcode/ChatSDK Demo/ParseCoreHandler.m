@@ -10,11 +10,12 @@
 //#import <Parse/Parse.h>
 #import <ChatSDK/Core.h>
 #import "CCUserWrapper.h"
+#import "CCThreadWrapper.h"
 
 @implementation ParseCoreHandler
 
 -(CCUserWrapper *) currentUser {
-    return [[CCUserWrapper alloc] initWithModel:self.currentUserModel];
+    return [CCUserWrapper userWithModel:self.currentUserModel];
 }
 
 -(void) goOnline {
@@ -30,9 +31,57 @@
 
 -(RXPromise *)observeUser: (NSString *)entityID {
     id<PUser> userModel = [BChatSDK.db fetchOrCreateEntityWithID:entityID withType:bUserEntity];
-    [[[CCUserWrapper alloc] initWithModel:userModel] onlineOn];
+    [[CCUserWrapper userWithModel:userModel] onlineOn];
 //    return [[CCUserWrapper userWithModel:userModel] metaOn];
     return nil;
+}
+
+-(RXPromise *) createThreadWithUsers: (NSArray *) users
+                                name: (NSString *) name
+                                type: (bThreadType) type
+                         forceCreate: (BOOL) force
+                       threadCreated: (void(^)(NSError * error, id<PThread> thread)) threadCreated {
+    
+    id<PThread> threadModel = [self fetchThreadWithUsers: users];
+    if (threadModel && threadCreated != Nil && !force) {
+        threadCreated(Nil, threadModel);
+        return [RXPromise resolveWithResult:Nil];
+    }
+    else {
+        threadModel = [self createThreadWithUsers:users name:name type: type];
+        CCThreadWrapper * thread = [CCThreadWrapper threadWithModel:threadModel];
+        
+        return [thread push].thenOnMain(^id(id<PThread> thread) {
+            
+            // Add the users to the thread
+            if (threadCreated != Nil) {
+                threadCreated(Nil, thread);
+            }
+            return [self addUsers:threadModel.users.allObjects toThread:threadModel];
+            
+        },^id(NSError * error) {
+            //[BChatSDK.db undo];
+            
+            if (threadCreated != Nil) {
+                threadCreated(error, Nil);
+            }
+            return error;
+        });
+    }
+}
+
+-(RXPromise *) addUsers: (NSArray *) users toThread: (id<PThread>) threadModel {
+    
+    CCThreadWrapper * thread = [CCThreadWrapper threadWithModel:threadModel];
+    
+    NSMutableArray * promises = [NSMutableArray new];
+    
+    // Push each user to make sure they have an account
+    for (id<PUser> userModel in users) {
+        [promises addObject:[thread addUser:[CCUserWrapper userWithModel:userModel]]];
+    }
+    
+    return [RXPromise all: promises];
 }
 
 @end

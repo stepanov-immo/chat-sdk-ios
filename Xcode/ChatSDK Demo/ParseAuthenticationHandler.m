@@ -117,7 +117,7 @@
         [strongSelf setLoginInfo:@{bAuthenticationIDKey: uid,
                                    bTokenKey: [NSString safe: token]}];
         
-        CCUserWrapper * user = [[CCUserWrapper alloc]initWithAuthUserData:parseUser];
+        CCUserWrapper * user = [CCUserWrapper userWithAuthUserData:parseUser];
         if (details.name && !user.model.name) {
             [user.model setName:details.name];
         }

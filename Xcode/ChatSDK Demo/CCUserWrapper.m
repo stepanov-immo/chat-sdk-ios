@@ -17,6 +17,10 @@
     NSObject<PUser> * _model;
 }
 
++(id) userWithAuthUserData: (PFUser *) data {
+    return [[self alloc] initWithAuthUserData:data];
+}
+
 - (instancetype)initWithAuthUserData:(PFUser *) user
 {
     self = [super init];
@@ -31,6 +35,10 @@
     return self;
 }
 
++(id) userWithModel: (id<PUser>) user {
+    return [[self alloc] initWithModel:user];
+}
+
 - (instancetype)initWithModel:(id<PUser>)user
 {
     self = [super init];
@@ -39,6 +47,11 @@
     }
     return self;
 }
+
+//+(id) userWithEntityID: (NSString *) entityID {
+//    id<PUser> user = [BChatSDK.db fetchOrCreateEntityWithID:entityID withType:bUserEntity];
+//    return [[self alloc] initWithModel: user];
+//}
 
 -(NSString *) entityID {
     return _model.entityID;

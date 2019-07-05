@@ -23,7 +23,7 @@
     BConfiguration * config = [BConfiguration configuration];
     config.rootPath = @"19_05_v1";
     config.allowUsersToCreatePublicChats = NO;
-    config.showEmptyChats = NO;
+    config.showEmptyChats = YES;
     config.googleMapsApiKey = @"AIzaSyCwwtZrlY9Rl8paM0R6iDNBEit_iexQ1aE";
     config.clearDataWhenRootPathChanges = YES;
     config.loginUsernamePlaceholder = @"Email";
