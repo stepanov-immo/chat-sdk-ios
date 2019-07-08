@@ -23,5 +23,10 @@
 -(RXPromise *) addUser: (CCUserWrapper *) user;
 -(void) usersOn;
 
+-(RXPromise *) pushLastMessage: (NSString *) messageId threadId:(NSString*)threadId;
+
+-(RXPromise *) messagesOn;
+-(void) messagesOff;
+
 @end
 

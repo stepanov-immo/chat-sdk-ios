@@ -157,4 +157,34 @@
     }, Nil);
     
 }
+
+-(RXPromise *) logout {
+    RXPromise * promise = [RXPromise new];
+    
+    id<PUser> user = BChatSDK.currentUser;
+    
+    // Stop observing the user
+    if(user) {
+        [BHookNotification notificationWillLogout:user];
+        [BChatSDK.event currentUserOff: user.entityID];
+    }
+    
+    NSError * error = Nil;
+    [PFUser logOut];
+    
+    _isAuthenticatedThisSession = NO;
+    [self setLoginInfo:Nil];
+    [BChatSDK.core goOffline];
+    
+    [[NSNotificationCenter  defaultCenter] postNotificationName:bNotificationBadgeUpdated object:Nil];
+    
+    if (user) {
+        [BHookNotification notificationDidLogout:user];
+    }
+    
+    [promise resolveWithResult:Nil];
+    
+    return promise;
+}
+
 @end

@@ -11,6 +11,7 @@
 #import <ChatSDK/Core.h>
 #import "CCUserWrapper.h"
 #import "CCThreadWrapper.h"
+#import "CCMessageWrapper.h"
 
 @implementation ParseCoreHandler
 
@@ -82,6 +83,24 @@
     }
     
     return [RXPromise all: promises];
+}
+
+-(RXPromise *) sendMessage: (id<PMessage>) messageModel {
+    
+    [BHookNotification notificationMessageWillSend:messageModel];
+    
+    // Create the new CCMessage wrapper
+    [BHookNotification notificationMessageSending:messageModel];
+    return [[CCMessageWrapper messageWithModel:messageModel] send].thenOnMain(^id(id success) {
+        
+        // Send a push notification for the message
+        NSDictionary * pushData = [BChatSDK.push pushDataForMessage:messageModel];
+        [BChatSDK.push sendPushNotification:pushData];
+        
+        [BHookNotification notificationMessageDidSend:messageModel];
+        return success;
+    }, Nil);
+    
 }
 
 @end

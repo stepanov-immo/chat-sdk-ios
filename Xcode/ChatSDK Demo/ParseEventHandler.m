@@ -70,6 +70,7 @@
 }
 
 -(void) contactsOff: (id<PUser>) user {
+    [self removeQueryObserver:@"contacts"];
 //    for (id<PUserConnection> contact in [user connectionsWithType:bUserConnectionTypeContact]) {
 //        // Turn the contact on
 //        id<PUser> contactModel = contact.user;
@@ -98,7 +99,7 @@
                       }
                       
                       //              [thread on];
-                      //              [thread messagesOn];
+                      [thread messagesOn];
                       [thread usersOn];
                       //              [thread lastMessageOn];
                       //              [thread metaOn];
@@ -112,7 +113,7 @@
                   if (!error) {
                       CCThreadWrapper * thread = [CCThreadWrapper threadWithParseObject:object];
                       //              [thread off];
-                      //              [thread messagesOff]; // We need to turn the messages off incase we rejoin the thread
+                      [thread messagesOff]; // We need to turn the messages off incase we rejoin the thread
                       //              [thread lastMessageOff];
                       //              [thread metaOff];
                       

@@ -12,6 +12,7 @@
 #import "NSManagedObject+Status.h"
 #import "NSObject+ParseHelper.h"
 #import "CCUserWrapper.h"
+#import "CCMessageWrapper.h"
 
 @implementation CCThreadWrapper
 {
@@ -187,6 +188,175 @@
     
     [self removeQueryObserver:@"thread_users_change"];
     [self removeQueryObserver:@"thread_users_update"];
+}
+
+-(RXPromise *) pushLastMessage: (NSString *) messageId threadId:(NSString*)threadId {
+    RXPromise * promise = [RXPromise new];
+    
+    
+    PFObject *thread = [PFObject objectWithoutDataWithClassName:@"Thread" objectId:threadId];
+    [thread fetchIfNeededInBackgroundWithBlock:^(PFObject * _Nullable object, NSError * _Nullable error) {
+        if (object != nil) {
+            
+            thread[@"lastMessage"] = [PFObject objectWithoutDataWithClassName:@"Message" objectId:messageId];
+            [thread saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (!error) {
+                    [promise resolveWithResult:Nil];
+                }
+                else {
+                    [promise rejectWithReason:error];
+                }
+            }];
+            
+        } else {
+            [promise rejectWithReason:error];
+        }
+    }];
+
+    return promise;
+}
+
+-(RXPromise *) messagesOn {
+    __weak __typeof__(self) weakSelf = self;
+    
+    if(BChatSDK.readReceipt) {
+        [BChatSDK.readReceipt updateReadReceiptsForThread:self.model];
+    }
+    
+    RXPromise * promise = [RXPromise new];
+    
+    if (((NSManagedObject *)_model).messagesOn) {
+        [promise resolveWithResult:self];
+        return promise;
+    }
+    ((NSManagedObject *)_model).messagesOn = YES;
+    
+    //return [self threadDeletedDate].thenOnMain(^id(NSDate * deletedDate) {
+        __typeof__(self) strongSelf = weakSelf;
+        
+        //FIRDatabaseQuery * query = [FIRDatabaseReference threadMessagesRef:strongSelf.model.entityID];
+    PFQuery* query = [PFQuery queryWithClassName:@"Message"];
+    [query whereKey:@"thread" equalTo:[PFObject objectWithoutDataWithClassName:@"Thread" objectId:strongSelf.model.entityID]];
+    
+        // Get the last message from the thread
+        NSArray * messages = strongSelf.model.messagesOrderedByDateDesc;
+        
+        // Start date - the date we'll start retrieving messages
+        NSDate * startDate = Nil;
+        
+        // If there are messages we only fetch messages since the
+        // last message
+        if (messages.count) {
+            startDate = ((id<PMessage>)messages.firstObject).date;
+        }
+        
+        // If thread is deleted
+//        if (deletedDate) {
+//            startDate = deletedDate;
+//            _model.deletedDate = deletedDate;
+//        }
+    
+        // Listen for new messages
+        startDate = [startDate dateByAddingTimeInterval:1];
+        
+//        // Convert the start date to a Firebase timestamp
+//        query = [query queryOrderedByChild:bDate];
+//        if (startDate) {
+//            query = [query queryStartingAtValue:[BFirebaseCoreHandler dateToTimestamp:startDate] childKey:bDate];
+//        }
+//
+//        // Limit to 50 messages just to be safe - on a busy public thread we wouldn't want to
+//        // download 50k messages!
+//        query = [query queryLimitedToLast:BChatSDK.config.messageHistoryDownloadLimit];
+    
+    [query orderByDescending:@"updatedAt"];
+    if (startDate) {
+        [query whereKey:@"updatedAt" greaterThanOrEqualTo:startDate];
+    }
+    query.limit = BChatSDK.config.messageHistoryDownloadLimit;
+        
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            //[query observeEventType:FIRDataEventTypeChildAdded withBlock:^(FIRDataSnapshot * snapshot) {
+            [self observe:@"messages" query:query childChange:^(PFObject *added, PFObject *removed) {
+                __typeof__(self) strongSelf = weakSelf;
+                
+                if (added != nil) {
+                    
+//                    if(BChatSDK.blocking) {
+//                        if([BChatSDK.blocking isBlocked:snapshot.value[bUserFirebaseID]]) {
+//                            return;
+//                        }
+//                    }
+                    
+                    [strongSelf.model setDeletedDate: Nil];
+                    
+                    // This gets the message if it exists and then updates it from the snapshot
+                    CCMessageWrapper * message = [CCMessageWrapper messageWithParseObject:added];
+                    
+                    
+                    BOOL newMessage = message.model.isDelivered == NO;
+                    
+                    // Is this a new message?
+                    // When a message arrives we add it to the database
+                    //newMessage = [BChatSDK.db fetchEntityWithID:snapshot.key withType:bMessageEntity] == Nil;
+                    
+                    // Mark the message as delivered
+                    [message.model setDelivered: @YES];
+                    
+                    // Add the message to this thread;
+                    [strongSelf.model addMessage:message.model];
+                    
+                    [BChatSDK.core save];
+                    
+                    if (newMessage) {
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [BHookNotification notificationMessageReceived: message.model];
+                        });
+                    }
+                    
+                    // Mark the message as received
+                    [message markAsReceived];
+                    
+                    if(BChatSDK.readReceipt) {
+                        [BChatSDK.readReceipt updateReadReceiptsForThread:self.model];
+                    }
+                    
+                    [promise resolveWithResult:self];
+                }
+                else {
+                    [promise rejectWithReason:Nil];
+                }
+            }];
+        });
+    
+
+    query = [PFQuery queryWithClassName:@"Message"];
+    [query whereKey:@"thread" equalTo:[PFObject objectWithoutDataWithClassName:@"Thread" objectId:strongSelf.model.entityID]];
+    [query orderByDescending:@"updatedAt"];
+    // Only add deletion handlers to the last 100 messages
+    query.limit = BChatSDK.config.messageDeletionListenerLimit;
+    
+        [self observe:@"messages2" query:query childChange:^(PFObject *added, PFObject *removed) {
+            __typeof__(self) strongSelf = weakSelf;
+            if (removed != nil) {
+                NSLog(@"Message deleted: %@", removed.objectId);
+                CCMessageWrapper * wrapper = [CCMessageWrapper messageWithParseObject:removed];
+                id<PMessage> message = wrapper.model;
+                [BHookNotification notificationMessageWillBeDeleted: message];
+                [strongSelf.model removeMessage: message];
+                [BHookNotification notificationMessageWasDeleted];
+            }
+        }];
+    
+        return promise;
+}
+
+-(void) messagesOff {
+    
+    ((NSManagedObject *)_model).messagesOn = NO;
+    
+    [self removeQueryObserver:@"messages"];
+    [self removeQueryObserver:@"messages2"];
 }
 
 @end

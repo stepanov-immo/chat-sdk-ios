@@ -25,6 +25,7 @@
 		D61FB41C22CF8C6D00ABD11B /* NSObject+ParseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB41B22CF8C6D00ABD11B /* NSObject+ParseHelper.m */; };
 		D61FB41F22CF940D00ABD11B /* NSManagedObject+Status.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB41E22CF940D00ABD11B /* NSManagedObject+Status.m */; };
 		D61FB42222CF97EC00ABD11B /* CCThreadWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D61FB42122CF97EC00ABD11B /* CCThreadWrapper.m */; };
+		D63F42DE22D337C100365AD4 /* CCMessageWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = D63F42DD22D337C100365AD4 /* CCMessageWrapper.m */; };
 		D7BAA270E791D36EA9DB4DFE /* Pods_ChatSDK_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9709095593724B15466CB732 /* Pods_ChatSDK_Demo.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +69,8 @@
 		D61FB41E22CF940D00ABD11B /* NSManagedObject+Status.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+Status.m"; sourceTree = "<group>"; };
 		D61FB42022CF97EC00ABD11B /* CCThreadWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCThreadWrapper.h; sourceTree = "<group>"; };
 		D61FB42122CF97EC00ABD11B /* CCThreadWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCThreadWrapper.m; sourceTree = "<group>"; };
+		D63F42DC22D337C100365AD4 /* CCMessageWrapper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CCMessageWrapper.h; sourceTree = "<group>"; };
+		D63F42DD22D337C100365AD4 /* CCMessageWrapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CCMessageWrapper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +158,8 @@
 				D61FB40C22CE557A00ABD11B /* CCUserWrapper.m */,
 				D61FB42022CF97EC00ABD11B /* CCThreadWrapper.h */,
 				D61FB42122CF97EC00ABD11B /* CCThreadWrapper.m */,
+				D63F42DC22D337C100365AD4 /* CCMessageWrapper.h */,
+				D63F42DD22D337C100365AD4 /* CCMessageWrapper.m */,
 				D61FB40522CE4DF700ABD11B /* Handlers */,
 				D61FB40222CE4CE600ABD11B /* BFirebaseNetworkAdapter.h */,
 				D61FB40022CE4CE600ABD11B /* BFirebaseNetworkAdapter.m */,
@@ -365,6 +370,7 @@
 			files = (
 				D61FB41922CF652100ABD11B /* ParseEventHandler.m in Sources */,
 				B5081AC81F56C04B0015417B /* AppDelegate.m in Sources */,
+				D63F42DE22D337C100365AD4 /* CCMessageWrapper.m in Sources */,
 				D61FB40A22CE554700ABD11B /* ParseAuthenticationHandler.m in Sources */,
 				D61FB42222CF97EC00ABD11B /* CCThreadWrapper.m in Sources */,
 				B5081AC91F56C04B0015417B /* main.m in Sources */,
